@@ -11,9 +11,9 @@ function resolveStockfishPath(): string {
 }
 
 export const config = {
-  port: parseInt(process.env.PORT ?? '3001', 10),
+  port: parseInt(process.env.PORT ?? '', 10) || 3001,
   jwtSecret: process.env.JWT_SECRET ?? (() => { throw new Error('JWT_SECRET not set'); })(),
   frontendUrl: process.env.FRONTEND_URL ?? 'http://localhost:5173',
   stockfishBinaryPath: resolveStockfishPath(),
-  stockfishPoolSize: parseInt(process.env.STOCKFISH_POOL_SIZE ?? '4', 10),
+  stockfishPoolSize: parseInt(process.env.STOCKFISH_POOL_SIZE ?? '', 10) || 4,
 };
