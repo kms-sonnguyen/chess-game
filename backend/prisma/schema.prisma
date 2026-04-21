@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String?
+  elo          Int      @default(800)
+  isBeginner   Boolean  @default(false)
+  gamesPlayed  Int      @default(0)
+  wins         Int      @default(0)
+  losses       Int      @default(0)
+  draws        Int      @default(0)
+  clockEnabled Boolean  @default(false)
+  theme        String   @default("dark")
+  createdAt    DateTime @default(now())
+  games        Game[]
+}
+
+model Game {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  status        String    @default("ongoing")   // ongoing | completed | abandoned
+  result        String?                          // win | loss | draw
+  openingName   String?
+  totalMoves    Int?
+  userEloBefore Int?
+  userEloAfter  Int?
+  aiSkillLevel  Int
+  aiDepth       Int
+  timeStarted   DateTime  @default(now())
+  timeEnded     DateTime?
+  moves         Move[]
+  analysis      Analysis?
+}
+
+model Move {
+  id          String  @id @default(uuid())
+  gameId      String
+  game        Game    @relation(fields: [gameId], references: [id])
+  moveNumber  Int     // 1-indexed half-moves (ply)
+  move        String  // UCI notation e.g. "e2e4"
+  fenAfter    String  // full board state snapshot after this move
+  timeSpentMs Int?
+}
+
+model Analysis {
+  id                 String    @id @default(uuid())
+  gameId             String    @unique
+  game               Game      @relation(fields: [gameId], references: [id])
+  status             String    @default("pending")  // pending | completed | failed
+  accuracyPct        Int?
+  blunders           Int?
+  mistakes           Int?
+  inaccuracies       Int?
+  bestMovesCount     Int?
+  openingScorePct    Int?
+  middlegameScorePct Int?
+  endgameScorePct    Int?
+  tacticsScorePct    Int?
+  keyMoments         Json?     // [{moveNumber, type, description}]
+  improvementTip     String?
+  errorMessage       String?
+  generatedAt        DateTime?
+}
