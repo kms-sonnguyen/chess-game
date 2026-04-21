@@ -29,12 +29,16 @@ authRouter.post('/login', async (req: Request, res: Response) => {
 });
 
 authRouter.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
-  const user = await db.user.findUnique({
-    where: { id: req.userId },
-    select: { id: true, email: true, displayName: true, elo: true, isBeginner: true,
-              gamesPlayed: true, wins: true, losses: true, draws: true,
-              clockEnabled: true, theme: true },
-  });
-  if (!user) { res.status(404).json({ error: 'User not found' }); return; }
-  res.json(user);
+  try {
+    const user = await db.user.findUnique({
+      where: { id: req.userId },
+      select: { id: true, email: true, displayName: true, elo: true, isBeginner: true,
+                gamesPlayed: true, wins: true, losses: true, draws: true,
+                clockEnabled: true, theme: true },
+    });
+    if (!user) { res.status(404).json({ error: 'User not found' }); return; }
+    res.json(user);
+  } catch {
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
