@@ -27,7 +27,7 @@ model User {
 model Game {
   id            String    @id @default(uuid())
   userId        String
-  user          User      @relation(fields: [userId], references: [id])
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   status        String    @default("ongoing")   // ongoing | completed | abandoned
   result        String?                          // win | loss | draw
   openingName   String?
@@ -40,22 +40,24 @@ model Game {
   timeEnded     DateTime?
   moves         Move[]
   analysis      Analysis?
+  @@index([userId])
 }
 
 model Move {
   id          String  @id @default(uuid())
   gameId      String
-  game        Game    @relation(fields: [gameId], references: [id])
+  game        Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
   moveNumber  Int     // 1-indexed half-moves (ply)
   move        String  // UCI notation e.g. "e2e4"
   fenAfter    String  // full board state snapshot after this move
   timeSpentMs Int?
+  @@unique([gameId, moveNumber])
 }
 
 model Analysis {
   id                 String    @id @default(uuid())
   gameId             String    @unique
-  game               Game      @relation(fields: [gameId], references: [id])
+  game               Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
   status             String    @default("pending")  // pending | completed | failed
   accuracyPct        Int?
   blunders           Int?
