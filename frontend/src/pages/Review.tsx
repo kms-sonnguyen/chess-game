@@ -6,7 +6,7 @@ import { useAuthStore } from '../store/authStore';
 import { StatCard } from '../components/StatCard';
 import { PhaseBar } from '../components/PhaseBar';
 import { KeyMoment } from '../components/KeyMoment';
-import { Analysis, GameState } from '../types';
+import type { Analysis, GameState } from '../types';
 
 export function Review() {
   const { gameId } = useParams<{ gameId: string }>();

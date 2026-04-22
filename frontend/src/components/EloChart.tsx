@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { GameSummary } from '../types';
+import type { GameSummary } from '../types';
 
 interface EloChartProps {
   games: GameSummary[];

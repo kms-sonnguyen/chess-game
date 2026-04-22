@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { startGame, listGames } from '../api/games';
 import { useAuthStore } from '../store/authStore';
 import { StatCard } from '../components/StatCard';
-import { GameSummary } from '../types';
+import type { GameSummary } from '../types';
 
 export function Home() {
   const user = useAuthStore(s => s.user);

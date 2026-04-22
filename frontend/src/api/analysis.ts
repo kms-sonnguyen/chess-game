@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { Analysis } from '../types';
+import type { Analysis } from '../types';
 
 export async function getAnalysis(gameId: string) {
   const { data } = await apiClient.get<Analysis>(`/api/games/${gameId}/analysis`);

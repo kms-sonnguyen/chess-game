@@ -1,5 +1,4 @@
 import { io, Socket } from 'socket.io-client';
-import { MoveResult } from '../types';
 
 const WS_URL = import.meta.env.VITE_WS_URL ?? 'http://localhost:3001';
 

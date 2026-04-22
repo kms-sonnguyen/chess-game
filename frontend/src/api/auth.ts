@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { User } from '../types';
+import type { User } from '../types';
 
 export async function register(email: string, password: string, isBeginner: boolean) {
   const { data } = await apiClient.post<{ token: string; user: User }>('/api/auth/register', { email, password, isBeginner });

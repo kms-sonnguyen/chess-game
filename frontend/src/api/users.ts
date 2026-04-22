@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { UserStats, User } from '../types';
+import type { UserStats, User } from '../types';
 
 export async function getStats() {
   const { data } = await apiClient.get<UserStats>('/api/users/me/stats');

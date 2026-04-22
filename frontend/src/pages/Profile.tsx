@@ -4,7 +4,7 @@ import { listGames, startGame } from '../api/games';
 import { getStats } from '../api/users';
 import { useAuthStore } from '../store/authStore';
 import { EloChart } from '../components/EloChart';
-import { GameSummary, UserStats } from '../types';
+import type { GameSummary, UserStats } from '../types';
 
 export function Profile() {
   const user = useAuthStore(s => s.user);

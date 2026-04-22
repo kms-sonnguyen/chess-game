@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Chess } from 'chess.js';
-import { GameMove } from '../types';
+import type { GameMove } from '../types';
 
 interface GameStoreState {
   gameId: string | null;

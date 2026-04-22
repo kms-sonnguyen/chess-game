@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { GameState, GameSummary } from '../types';
+import type { GameState, GameSummary } from '../types';
 
 export async function startGame() {
   const { data } = await apiClient.post<{ gameId: string; aiSkillLevel: number; userEloBefore: number }>('/api/games');

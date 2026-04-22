@@ -1,4 +1,4 @@
-import { GameMove } from '../types';
+import type { GameMove } from '../types';
 
 interface MoveListProps {
   moves: GameMove[];

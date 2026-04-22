@@ -6,13 +6,13 @@ import { useGameStore } from '../store/gameStore';
 import { useAuthStore } from '../store/authStore';
 import { connectGameSocket, sendMove, rejoinGame } from '../socket/gameSocket';
 import { getGame } from '../api/games';
-import { MoveResult } from '../types';
+import type { MoveResult } from '../types';
 
 export function Game() {
   const { gameId } = useParams<{ gameId: string }>();
   const navigate = useNavigate();
   const token = useAuthStore(s => s.token);
-  const { fen, moves, isPlayerTurn, isGameOver, isReconnecting, result,
+  const { fen, moves, isPlayerTurn, isGameOver, isReconnecting,
           initGame, applyMoveResult, recoverFromServer, setReconnecting } = useGameStore();
   const moveStartTime = useRef<number>(Date.now());
 

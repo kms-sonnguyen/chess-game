@@ -13,7 +13,7 @@ export function ChessBoard({ fen, disabled, onMove }: ChessBoardProps) {
   const chess = new Chess(fen);
 
   // Compute legal move highlights
-  const legalMoveSquares: Record<string, { background: string }> = {};
+  const legalMoveSquares: Record<string, React.CSSProperties> = {};
   if (selectedSquare) {
     const moves = chess.moves({ square: selectedSquare as any, verbose: true });
     moves.forEach(m => {
@@ -21,7 +21,9 @@ export function ChessBoard({ fen, disabled, onMove }: ChessBoardProps) {
     });
   }
 
-  function onSquareClick(square: string) {
+  const boardWidth = Math.min(typeof window !== 'undefined' ? window.innerWidth - 48 : 480, 480);
+
+  function handleSquareClick({ square }: { piece: any; square: string }) {
     if (disabled) return;
     if (selectedSquare) {
       const move = chess.move({ from: selectedSquare, to: square, promotion: 'q' });
@@ -36,8 +38,8 @@ export function ChessBoard({ fen, disabled, onMove }: ChessBoardProps) {
     if (piece && piece.color === chess.turn()) setSelectedSquare(square);
   }
 
-  function onPieceDrop(sourceSquare: string, targetSquare: string): boolean {
-    if (disabled) return false;
+  function handlePieceDrop({ sourceSquare, targetSquare }: { piece: any; sourceSquare: string; targetSquare: string | null }): boolean {
+    if (disabled || !targetSquare) return false;
     const chess2 = new Chess(fen);
     const move = chess2.move({ from: sourceSquare, to: targetSquare, promotion: 'q' });
     if (!move) return false;
@@ -47,12 +49,14 @@ export function ChessBoard({ fen, disabled, onMove }: ChessBoardProps) {
 
   return (
     <Chessboard
-      position={fen}
-      onSquareClick={onSquareClick}
-      onPieceDrop={onPieceDrop}
-      customSquareStyles={legalMoveSquares}
-      boardWidth={Math.min(typeof window !== 'undefined' ? window.innerWidth - 48 : 480, 480)}
-      arePiecesDraggable={!disabled}
+      options={{
+        position: fen,
+        onSquareClick: handleSquareClick,
+        onPieceDrop: handlePieceDrop,
+        squareStyles: legalMoveSquares,
+        boardStyle: { width: boardWidth, height: boardWidth },
+        allowDragging: !disabled,
+      }}
     />
   );
 }
